@@ -41,7 +41,7 @@
                         <h2 class="card-title">{{$produto->nome}}</h2>
                         <p>{{$produto->descricao}}</p>
                         <div class="card-actions justify-between">
-                          <div class="bg-red-500 text-white border rounded-full font-bold text-m">R${{$produto->valor}},00</div>
+                          <div class="bg-red-500 pl-2 pr-2 pb-1 pt-1 text-white border rounded-full font-bold text-m">£ {{number_format($produto->valor,2, ',', '.')}}</div>
                             <button class="btn btn-primary">Comprar</button>
                         </div>
                     </div>
