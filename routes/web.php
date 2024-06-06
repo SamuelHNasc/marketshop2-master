@@ -38,7 +38,7 @@ Route::view('/cadastrar-produto', 'Cadastrar-produto');
 
 Route::post('/salvar-produto', function (Request $request) {
     
-    dd($request);
+    //dd($request);
     $produto = new Produto();
     $produto->nome = $request-> nome;
     $produto->descricao = $request-> descricao;
