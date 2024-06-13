@@ -29,14 +29,17 @@ Route::post('/salvar-usuario', function (Request $request){
     $usuario->email = $request->email;
     $usuario->password = $request->senha;
     $usuario->save();
-    dd("Salvo com Sucesso!!!");
+    //dd("Salvo com Sucesso!!!");
+
+    return redirect('/login');
 })->name('salvar-usuario');
 
 //-------------------------- PRODUTOS --------------------------
 
-Route::view('/cadastrar-produto', 'Cadastrar-produto');
+Route::view('/cadastrar-produto', 'cadastrar-produto')->middleware('auth');
 
-Route::post('/salvar-produto', function (Request $request) {
+Route::post('/salvar-produto', 
+function (Request $request) {
     
     //dd($request);
     $produto = new Produto();
@@ -58,6 +61,41 @@ Route::post('/salvar-produto', function (Request $request) {
 
     //Salva o produto no banco de dados
     $produto->save();
-    dd("Salvo com Sucesso!!!");
+    //dd("Salvo com Sucesso!!!");
 
-})->name('salvar-produto');
+    return redirect('/');
+
+})->name('salvar-produto')->middleware('auth');
+
+
+//----------------------------------LOGIN--------------------------------
+// Abre tela de login
+
+Route::view('/login', "login")->name("login");
+
+Route::post('/logar', function (Request $request) { 
+    //testar se está recebendo os dados. depois apagar 
+    //dd($request);
+
+    //verifica se a pessoa preencheu os campos de login
+    $credentials = $request->validate([ 
+        'email' => ['required', 'email'], //verifica se tem email e se é email 
+        'senha' => ['required'], //verifica se tem senha
+    ]);
+    //compara se os dados no banco de dados são iguais o que ele preencheu
+    if (Auth::attempt(['email' => $request->email, 'password' => $request->senha])) {
+        //cria a sessão do usuário logado
+        $request->session()->regenerate();
+        //redireciona para a tela de cadastro de produtos
+        return redirect()->intended('/cadastrar-produto');
+    } else {
+        dd("Usuário ou senha incorretos");
+    }
+
+
+})->name('logar');
+
+Route::get('/sair', function () {
+    Auth::logout();
+    return redirect('/');
+});

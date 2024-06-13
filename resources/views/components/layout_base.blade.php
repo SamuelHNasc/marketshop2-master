@@ -9,6 +9,8 @@
     <title>{{$titulo ?? 'MarketShop'}}</title>
 </head>
 <body data-theme="light" class="min-h-screen bg-gradient-to-r from-pink-200 to-cyan-200">
-    {{$slot}}
+
+        {{$slot}}
+
 </body>
 </html>
